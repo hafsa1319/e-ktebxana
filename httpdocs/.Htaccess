@@ -1,6 +1,0 @@
-RewriteEngine On
-RewriteCond %{HTTP_HOST} !^www\.e-ktebxana\.krd
-RewriteRule (.*) http://www.ktebxana.krd/$1 [R=301,L]
-
-
-Options All -Indexes ErrorDocument 404 /index.html
