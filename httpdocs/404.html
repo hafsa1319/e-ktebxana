@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+      <meta charset="utf-8">
+		<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+		<meta name="description" content="My Account">
+
+      <title> My Account </title>
+      <script src="/Library/Js/jquery.min.js?v500.001" type="text/javascript"></script>
+      <script src="/Library/Js/jquery-ui.min.js?v500.001" type="text/javascript"></script>
+      <script src="/Library/Js/Cookie.js?v500.001" type="text/javascript"></script>
+      <script src='/Library/Js/dropzone.js?v500.001' type="text/javascript"></script>
+      <script src='/Library/Js/Main.js?v500.00623' type="text/javascript"></script>
+      <script src='/Library/Js/Functions.js?v500.001' type="text/javascript"></script>
+
+      <link href="/Library/Css/bootstrap.min.css?v500.002" rel="stylesheet" type="text/css"/>
+      <link rel="stylesheet" href="/Library/Css/dropzone.css?v500.001" type="text/css">
+      <link rel="stylesheet" href="/Library/Css/Main.css?v500.015" type="text/css">
+
+      <script src="https://panel.ciceksiparisi.net/Library/Js/Chart.js?v500.001" type="text/javascript"></script>
+      <link href="https://all.farktor.com/Library/Theme_v2/assets/flatpickr/flatpickr.min.css?v500.001" rel="stylesheet" />
+      <script src="https://all.farktor.com/Library/Theme_v2/assets/flatpickr/flatpickr.js?v500.001" type="text/javascript"></script>
+      <script src="https://all.farktor.com/Library/Theme_v2/assets/flatpickr/tr.js?v500.001" type="text/javascript"></script>
+      <script type="text/javascript">
+         function datePckr(){
+               var example =  flatpickr("input[class=date]", {
+                  "locale": "tr",
+                  "dateFormat": "d-m-Y",
+                  "minDate": "1950-01-01",
+                  allowInput: true
+               });
+               var example =  flatpickr("input[class=dateRange]", {
+               "locale": "tr",
+                  mode: "range",
+                  "dateFormat": "d/m/Y",
+                  allowInput: true,
+                  disable: [
+                     function(date) {
+                           return !(date.getDate() % 45);
+                     }
+                  ]
+               });
+         }
+         </script>
+         
+    </head>
+    <body Page="">
+      
+    </body>
+</html>
+
+<script>
+   var system_URL       = window.location.pathname
+   system_URL           = system_URL.replaceAll("/","")
+
+   var appPath          = "http://116.203.99.112:8082"
+   var versionUpdate    = (new Date()).getTime();  
+
+   var user             = localStorage.getItem("user")
+   var userConnect      = localStorage.getItem("userConnect")
+   if(user==null){ user = "" }
+   if(userConnect==null){ userConnect = "" }
+
+   console.log("system_URL="+system_URL)
+   if(system_URL!="login"){
+      if(userConnect=="true"){
+         if(user==""){ 
+            var userInfo   = JSON.parse(localStorage.getItem("user"))
+            localStorage.removeItem("userConnect")
+            window.location.href="/login" 
+         }
+      }else{
+         window.location.href="/login"
+      }
+   }else{
+      if(userConnect=="true"){
+         window.location.href="/dashboard"
+      }
+   }
+
+   var pagePath         =  ""
+   var pageUrl          =  ""
+
+
+   if(system_URL=="login"){
+      if(userConnect=="true"){
+         var userInfo   = JSON.parse(localStorage.getItem("user"))
+         if(userInfo==null){ 
+            localStorage.removeItem("userConnect")
+            window.location.href="/login" 
+         }else{
+            userType    = userInfo.type
+         }
+      }
+      $("body").attr("Page",system_URL).load("/Page/System/Login.html")
+      funHead()
+   }
+   if(system_URL=="dashboard"){
+      $.ajax({
+      type: "get",
+      url: "/Page/dashboard/index.html",
+      data : "",
+      success: function(data) {
+         $("body").attr("Page",system_URL).html(data)
+         funHead()
+         funNav()
+      }
+      });
+   }
+
+
+   function funHead(){
+      if($('.Header').html()!=undefined){
+         $('.Header').html('\
+         <div class="Container">\
+            <div class="row">\
+               <div class="Logo"><img src="/Library/Img/logo-3.png"></div>\
+               <div class="LanguageBar">\
+                  <span> Türkçe </span>\
+                  <div class="Wind">\
+                     <span> Türkçe </span>\
+                     <span> Almanca </span>\
+                     <span> İngilizce </span>\
+                  </div>\
+               </div>\
+            </div>\
+         </div>\
+         ')
+      }
+   }
+   function funNav(){
+      if($('.Nav').html()!=undefined){
+         $('.Nav').html('\
+         <div class="Container">\
+            <div class="row">\
+               <a href="/admin-library" class="NavItem">\
+                  <i></i>\
+                  <span>Kütüphane</span>\
+               </a>\
+               <a href="/admin-region" class="NavItem">\
+                  <i></i>\
+                  <span>Bölge Yönetimi</span>\
+               </a>\
+               <a href="/admin-book" class="NavItem">\
+                  <i></i>\
+                  <span>Kitaplar</span>\
+               </a>\
+            </div>\
+         </div>\
+         ')
+      }
+   }
+
+</script>
+
+
+
+
